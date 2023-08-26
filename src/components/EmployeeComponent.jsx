@@ -1,6 +1,7 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { createEmployee } from "../services/employeeservice";
 
 export function EmployeeComponent() {
 	const navigator = useNavigate();
@@ -24,6 +25,11 @@ export function EmployeeComponent() {
 
 		const employee = { firstName, lastName, email };
 		console.log(employee);
+
+		createEmployee(employee).then((response) => {
+            console.log(response.data);
+            goToPreviousPage();
+        });
 	}
 
 	return (
