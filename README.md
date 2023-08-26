@@ -6,7 +6,7 @@ The concept behind this app is to apply and put an interface to manipulate the d
 
 ## Development
 
-# React + Vite
+### React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
