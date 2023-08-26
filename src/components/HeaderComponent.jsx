@@ -6,17 +6,24 @@ import {
 	IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 function NavList() {
+	const navigator = useNavigate();
+
+	function goToHome() {
+		navigator("/");
+	}
+
 	return (
 		<ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
 			<Typography
 				as="li"
 				variant="small"
 				color="blue-gray"
-				className="p-1 font-medium">
+				className="p-1 font-medium cursor-pointer">
 				<a
-					href="#"
+					onClick={goToHome}
 					className="flex items-center hover:text-blue-500 transition-colors">
 					Employees
 				</a>

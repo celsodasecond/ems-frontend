@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+import { Button, Card, Typography } from "@material-tailwind/react";
 import { listEmployees } from "../services/employeeservice";
+import { useNavigate } from "react-router-dom";
 
 const ListEmployeeComponent = () => {
 	const [employees, setEmployees] = useState([]);
+
+	const navigator = useNavigate();
 
 	const TABLE_HEAD = ["Id", "First Name", "Last Name", "Email", ""];
 
@@ -18,8 +21,20 @@ const ListEmployeeComponent = () => {
 			});
 	}, []);
 
+	function addNewEmployee() {
+		navigator("/add-employee");
+	}
+
 	return (
 		<div className="mt-5 mx-32">
+			<h1 className="text-center text-2xl mb-1">List of Employees</h1>
+			<Button
+				className="-my-1"
+				size="sm"
+				ripple={true}
+				onClick={addNewEmployee}>
+				Add Employee
+			</Button>
 			<Card className="h-full w-full overflow-hidden mt-5">
 				<table className="w-full min-w-max table-auto text-left">
 					<thead>
