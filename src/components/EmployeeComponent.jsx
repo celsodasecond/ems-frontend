@@ -1,7 +1,11 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { createEmployee, getEmployee } from "../services/employeeservice";
+import {
+	createEmployee,
+	getEmployee,
+	updateEmployee,
+} from "../services/employeeservice";
 
 export function EmployeeComponent() {
 	const navigator = useNavigate();
@@ -71,17 +75,34 @@ export function EmployeeComponent() {
 		}
 	}, [id]);
 
-	function saveEmployee(e) {
+	function saveOrUpdateEmployee(e) {
 		e.preventDefault();
 
 		if (validateForm()) {
 			const employee = { firstName, lastName, email };
 			console.log(employee);
 
-			createEmployee(employee).then((response) => {
-				console.log(response.data);
-				goToPreviousPage();
-			});
+			// Logic for Updating
+			if (id) {
+				updateEmployee(id, employee)
+					.then((response) => {
+						console.log(response.data);
+						goToPreviousPage();
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			} else {
+				// Logic for Creating
+				createEmployee(employee)
+					.then((response) => {
+						console.log(response.data);
+						goToPreviousPage();
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		}
 	}
 
@@ -148,18 +169,20 @@ export function EmployeeComponent() {
 							</div>
 						)}
 					</div>
-					<Button className="mt-6" fullWidth onClick={saveEmployee}>
-						Add Employee
+					<Button className="mt-6" fullWidth onClick={saveOrUpdateEmployee}>
+						{id ? "Update" : "Add"} Employee
 					</Button>
-					<Typography color="gray" className="mt-4 text-center font-normal">
-						Already added the employee?{" "}
-						<a
-							href="#"
-							className="font-medium text-gray-900"
-							onClick={goToPreviousPage}>
-							Go back
-						</a>
-					</Typography>
+					{!id && (
+						<Typography color="gray" className="mt-4 text-center font-normal">
+							Already added the employee?{" "}
+							<a
+								href="#"
+								className="font-medium text-gray-900"
+								onClick={goToPreviousPage}>
+								Go back
+							</a>
+						</Typography>
+					)}
 				</form>
 			</Card>
 		</div>
