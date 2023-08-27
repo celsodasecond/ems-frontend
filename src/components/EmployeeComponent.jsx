@@ -1,10 +1,11 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
-import { createEmployee } from "../services/employeeservice";
+import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { createEmployee, getEmployee } from "../services/employeeservice";
 
 export function EmployeeComponent() {
 	const navigator = useNavigate();
+	const { id } = useParams();
 
 	function goToPreviousPage() {
 		navigator(-1);
@@ -56,6 +57,20 @@ export function EmployeeComponent() {
 		return valid;
 	}
 
+	useEffect(() => {
+		if (id) {
+			getEmployee(id)
+				.then((response) => {
+					setFirstName(response.data.firstName);
+					setLastName(response.data.lastName);
+					setEmail(response.data.email);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}, [id]);
+
 	function saveEmployee(e) {
 		e.preventDefault();
 
@@ -70,12 +85,26 @@ export function EmployeeComponent() {
 		}
 	}
 
-	return (
-		<div className="flex justify-center items-center mt-2">
-			<Card color="transparent" shadow={false}>
+	function pageTitle() {
+		if (id) {
+			return (
+				<Typography variant="h4" color="blue-gray">
+					Update Employee
+				</Typography>
+			);
+		} else {
+			return (
 				<Typography variant="h4" color="blue-gray">
 					Add Employee
 				</Typography>
+			);
+		}
+	}
+
+	return (
+		<div className="flex justify-center items-center mt-2">
+			<Card color="transparent" shadow={false}>
+				{pageTitle()}
 				<Typography color="gray" className="mt-1 font-normal">
 					Enter the details of the employee.
 				</Typography>

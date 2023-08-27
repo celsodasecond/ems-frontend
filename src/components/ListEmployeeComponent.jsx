@@ -8,7 +8,7 @@ const ListEmployeeComponent = () => {
 
 	const navigator = useNavigate();
 
-	const TABLE_HEAD = ["Id", "First Name", "Last Name", "Email", ""];
+	const TABLE_HEAD = ["Id", "First Name", "Last Name", "Email", "Actions"];
 
 	useEffect(() => {
 		listEmployees()
@@ -23,6 +23,10 @@ const ListEmployeeComponent = () => {
 
 	function addNewEmployee() {
 		navigator("/add-employee");
+	}
+
+	function updateEmployee(id) {
+		navigator(`/edit-employee/${id}`)
 	}
 
 	return (
@@ -100,7 +104,8 @@ const ListEmployeeComponent = () => {
 											href="#"
 											variant="small"
 											color="blue-gray"
-											className="font-medium">
+											className="font-medium hover:text-blue-500 transition-colors"
+											onClick={() => updateEmployee(id)}>
 											Edit
 										</Typography>
 									</td>
