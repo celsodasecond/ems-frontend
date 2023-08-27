@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { listEmployees } from "../services/employeeservice";
+import { listEmployees, deleteEmployee } from "../services/employeeservice";
 import { useNavigate } from "react-router-dom";
 
 const ListEmployeeComponent = () => {
@@ -11,6 +11,10 @@ const ListEmployeeComponent = () => {
 	const TABLE_HEAD = ["Id", "First Name", "Last Name", "Email", "Actions"];
 
 	useEffect(() => {
+		getAllEmployees();
+	}, []);
+
+	function getAllEmployees() {
 		listEmployees()
 			.then((response) => {
 				setEmployees(response.data);
@@ -19,14 +23,27 @@ const ListEmployeeComponent = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}
 
 	function addNewEmployee() {
 		navigator("/add-employee");
 	}
 
 	function updateEmployee(id) {
-		navigator(`/edit-employee/${id}`)
+		navigator(`/edit-employee/${id}`);
+	}
+
+	function removeEmployee(id) {
+		if (confirm("Are you sure?")) {
+			deleteEmployee(id)
+				.then((response) => {
+					console.log(response.data);
+					getAllEmployees();
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
 	}
 
 	return (
@@ -103,8 +120,16 @@ const ListEmployeeComponent = () => {
 											color="green"
 											size="sm"
 											ripple
+											className="mr-2"
 											onClick={() => updateEmployee(id)}>
 											Edit
+										</Button>
+										<Button
+											color="red"
+											size="sm"
+											ripple
+											onClick={() => removeEmployee(id)}>
+											Delete
 										</Button>
 									</td>
 								</tr>

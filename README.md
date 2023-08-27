@@ -2,7 +2,9 @@
 
 ## What is this Project ?
 
-The concept behind this app is to apply and put an interface to manipulate the data coming from the [Property Management System - Backend](https://github.com/celsodasecond/ems-backend).
+The concept behind this app is to apply and put an interface to manipulate the data coming from the [Property Management System - Backend](https://github.com/celsodasecond/ems-backend). 
+
+**NOTE:** This project is not mobile responsive and only works best for web/desktop platforms 💻.
 
 ## Development
 
