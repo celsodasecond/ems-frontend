@@ -14,22 +14,60 @@ export function EmployeeComponent() {
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 
+	const [errors, setErrors] = useState({
+		firstName: "",
+		lastName: "",
+		email: "",
+	});
+
 	const handleFirstName = (e) => setFirstName(e.target.value);
 
 	const handleLastName = (e) => setLastName(e.target.value);
 
 	const handleEmail = (e) => setEmail(e.target.value);
 
+	function validateForm() {
+		let valid = true;
+
+		const errorsCopy = { ...errors };
+
+		if (firstName.trim()) {
+			errorsCopy.firstName = "";
+		} else {
+			errorsCopy.firstName = "First name is required";
+			valid = false;
+		}
+
+		if (lastName.trim()) {
+			errorsCopy.lastName = "";
+		} else {
+			errorsCopy.lastName = "Last name is required";
+			valid = false;
+		}
+
+		if (email.trim()) {
+			errorsCopy.email = "";
+		} else {
+			errorsCopy.email = "Email is required";
+		}
+
+		setErrors(errorsCopy);
+
+		return valid;
+	}
+
 	function saveEmployee(e) {
 		e.preventDefault();
 
-		const employee = { firstName, lastName, email };
-		console.log(employee);
+		if (validateForm()) {
+			const employee = { firstName, lastName, email };
+			console.log(employee);
 
-		createEmployee(employee).then((response) => {
-            console.log(response.data);
-            goToPreviousPage();
-        });
+			createEmployee(employee).then((response) => {
+				console.log(response.data);
+				goToPreviousPage();
+			});
+		}
 	}
 
 	return (
@@ -47,21 +85,39 @@ export function EmployeeComponent() {
 							size="lg"
 							label="First Name"
 							value={firstName}
+							error={errors.firstName.length > 0}
 							onChange={handleFirstName}
 						/>
+						{errors.firstName && (
+							<div className="invalid-feedback -mt-5 text-sm">
+								{errors.firstName}
+							</div>
+						)}
 						<Input
 							size="lg"
 							label="Last Name"
 							value={lastName}
+							error={errors.lastName.length > 0}
 							onChange={handleLastName}
 						/>
+						{errors.lastName && (
+							<div className="invalid-feedback -mt-5 text-sm">
+								{errors.lastName}
+							</div>
+						)}
 						<Input
 							type="email"
 							size="lg"
 							label="Email"
 							value={email}
+							error={errors.email.length > 0}
 							onChange={handleEmail}
 						/>
+						{errors.email && (
+							<div className="invalid-feedback -mt-5 text-sm">
+								{errors.email}
+							</div>
+						)}
 					</div>
 					<Button className="mt-6" fullWidth onClick={saveEmployee}>
 						Add Employee
