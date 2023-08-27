@@ -51,9 +51,8 @@ export default function HeaderComponent() {
 			<div className="flex items-center justify-between text-blue-gray-900">
 				<Typography
 					as="a"
-					href="#"
 					variant="h6"
-					className="mr-4 cursor-pointer py-1.5">
+					className="mr-4 cursor-default py-1.5">
 					Simple Employee Management System
 				</Typography>
 				<div className="hidden lg:block">

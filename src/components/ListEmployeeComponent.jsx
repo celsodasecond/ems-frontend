@@ -99,15 +99,13 @@ const ListEmployeeComponent = () => {
 										</Typography>
 									</td>
 									<td className={classes}>
-										<Typography
-											as="a"
-											href="#"
-											variant="small"
-											color="blue-gray"
-											className="font-medium hover:text-blue-500 transition-colors"
+										<Button
+											color="green"
+											size="sm"
+											ripple
 											onClick={() => updateEmployee(id)}>
 											Edit
-										</Typography>
+										</Button>
 									</td>
 								</tr>
 							);
