@@ -6,6 +6,7 @@ import {
 	getEmployee,
 	updateEmployee,
 } from "../services/employeeservice";
+import { listDepartments } from "../services/DepartmentService";
 
 export function EmployeeComponent() {
 	const navigator = useNavigate();
@@ -18,11 +19,24 @@ export function EmployeeComponent() {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
+	const [departmentId, setDepartmentId] = useState("");
+	const [departments, setDepartments] = useState([]);
+
+	useEffect(() => {
+		listDepartments()
+			.then((response) => {
+				setDepartments(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
 
 	const [errors, setErrors] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
+		department: "",
 	});
 
 	const handleFirstName = (e) => setFirstName(e.target.value);
@@ -54,6 +68,14 @@ export function EmployeeComponent() {
 			errorsCopy.email = "";
 		} else {
 			errorsCopy.email = "Email is required";
+			valid = false;
+		}
+
+		if (departmentId.trim()) {
+			errorsCopy.department = "";
+		} else {
+			errorsCopy.department = "Department is required";
+			valid = false;
 		}
 
 		setErrors(errorsCopy);
@@ -68,6 +90,7 @@ export function EmployeeComponent() {
 					setFirstName(response.data.firstName);
 					setLastName(response.data.lastName);
 					setEmail(response.data.email);
+					setDepartmentId(response.data.departmentId);
 				})
 				.catch((error) => {
 					console.log(error);
@@ -79,7 +102,7 @@ export function EmployeeComponent() {
 		e.preventDefault();
 
 		if (validateForm()) {
-			const employee = { firstName, lastName, email };
+			const employee = { firstName, lastName, email, departmentId };
 			console.log(employee);
 
 			// Logic for Updating
@@ -166,6 +189,26 @@ export function EmployeeComponent() {
 						{errors.email && (
 							<div className="invalid-feedback -mt-5 text-sm">
 								{errors.email}
+							</div>
+						)}
+						<select
+							className={`${errors.department ? "is-invalid" : ""}`}
+							value={departmentId}
+							onChange={(e) => setDepartmentId(e.target.value)}>
+							<option value="Select Department" disabled>
+								Select Department
+							</option>
+							{departments.map((department) => {
+								return (
+									<option key={department.id} value={department.id}>
+										{department.departmentName}
+									</option>
+								);
+							})}
+						</select>
+						{errors.department && (
+							<div className="invalid-feedback -mt-5 text-sm">
+								{errors.department}
 							</div>
 						)}
 					</div>
